@@ -18,9 +18,10 @@ module.exports = /** @class */ (function() {
     return send(options)
   }
 
-  ajax.post = function(url, options) {
+  ajax.post = function(url, data, options) {
     options = createDefaultOptions(options)
-    options.url = url
+    options.data = data
+    options.url = url 
     options.method = 'POST'
     return send(options)
   }
@@ -67,14 +68,17 @@ module.exports = /** @class */ (function() {
       }
 
       // 获取参数
-      let { method, async, url, params, timeout } = options
+      let { method, async, url, data, timeout } = options
+      // 将传入参数转化为查询字符
+      let params = getParams(options.data)
+      
       xhr.timeout = timeout
       if (method == 'GET') {
         xhr.open(method, `${url}?${params}`, async)
         xhr.send(null)
       } else {
         xhr.open(method, url, async)
-        xhr.setRequestHeader('Content-method', 'application/x-www-form-urlencoded')
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
         xhr.send(params)
       }
     })
@@ -114,19 +118,17 @@ module.exports = /** @class */ (function() {
       options
     )
     options.method = options.method.toUpperCase()
-    // 将传入参数转化为查询字符
-    options.params = getParams(options.data)
     return options
   }
+
 
   /**
    * 将Object格式转换为查询字符串，如{a:1} => a=1
    *
    * @param {Object} data 数据 
-   * @param {Boolean} cache 暂时没用
    * @returns {String} 查询字符串
    */
-  function getParams(data, cache) {
+  function getParams(data) {
     let queryStr = [] // 返回字符串
     for (let param in data) {
       queryStr.push(`${encodeURIComponent(param)}=${encodeURIComponent(data[param])}`)
