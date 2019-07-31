@@ -1,0 +1,8 @@
+{
+  "version": "1.0.0",
+  "description": "My webpack project",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  }
+}
