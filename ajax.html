@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <button>Get Json</button>
+    <div></div>
+  </body>
+</html>
+<script src="./ajax.js"></script>
+<script>
+  const div = document.querySelector('div')
+  document.querySelector('button').onclick = function() {
+    ajaxp.get('https://yesno.wtf/api').then(result => {
+      result = JSON.parse(result.data)
+      div.innerHTML = `
+      <p>answer: ${result.answer}</p>
+      <img src="${result.image}" >`
+    })
+
+    axios.get('/test.json').then(result => {
+      console.log(result)
+    })
+    ajaxp.get('/test.json').then(result => {
+      console.log(result)
+    })
+  }
+
+</script>
