@@ -38,11 +38,25 @@ var ajaxp = /** @class */ (function() {
         if (xhr.readyState == 4) {
           if (xhr.status >= 200 && xhr.status < 300) {
             // 将响应封装为对象
+            let headersObj = {}
+            let headers = xhr.getAllResponseHeaders()
+            headers.trim('\n').split('\n').forEach((param, index) => {
+              param = param.split(':')
+              let key = param[0]
+              let value = param[1]
+              headersObj[key] = value
+            })
+            
+            // 
+            
+
             let response = {
-              data: xhr.response,
+              data: convertIfJson(xhr.response),
               config: options,
               status: xhr.status,
-              statusText: xhr.statusText
+              statusText: xhr.statusText,
+              headers: headersObj,
+              request: xhr
             }
             
             
@@ -66,6 +80,20 @@ var ajaxp = /** @class */ (function() {
       }
     })
   }
+  /**
+   * 如果是jsong格式字符串，则返回object，否则不改变原字符串
+   *
+   * @param {String} str
+   * @returns {Object | String} 
+   */
+  function convertIfJson(str) {
+    try { 
+      return JSON.parse(str)
+    } catch (error) {
+      return str
+    }
+  } 
+
 
   /**
    * 混合默认ajax配置与新的ajax配置
