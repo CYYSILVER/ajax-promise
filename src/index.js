@@ -1,16 +1,24 @@
-module.exports = /** @class */ (function() {
+const { convertIfJson } = require('./helpers/util')
 
+module.exports = /** @class */ (function() {
   /**
    * 直接发送ajax请求，相关配置以options为参数传入
-   * 
+   *
    * @param {Obejct} options ajax请求配置
-   * @returns
+   * @returns {Promise}
    */
   function ajax(options) {
     options = createDefaultOptions(options)
     return send(options)
   }
 
+  /**
+   * ajax Get请求
+   *
+   * @param {String} url url地址
+   * @param {Object} options 其他选项
+   * @returns {Promise}
+   */
   ajax.get = function(url, options) {
     options = createDefaultOptions(options)
     options.url = url
@@ -18,17 +26,25 @@ module.exports = /** @class */ (function() {
     return send(options)
   }
 
+  /**
+   * ajax Get请求
+   *
+   * @param {String} url url地址
+   * @param {Object} data post数据
+   * @param {Object} options 其他选项
+   * @returns {Promise}
+   */
   ajax.post = function(url, data, options) {
     options = createDefaultOptions(options)
     options.data = data
-    options.url = url 
+    options.url = url
     options.method = 'POST'
     return send(options)
   }
 
   /**
    * 用于封装xhr对象，返回promise对象
-   * 
+   *
    * @param {Object} options ajaxq请求配置
    * @return {Promise}  promised对象
    */
@@ -41,15 +57,16 @@ module.exports = /** @class */ (function() {
             // 将响应封装为对象
             let headersObj = {}
             let headers = xhr.getAllResponseHeaders()
-            headers.trim('\n').split('\n').forEach((param, index) => {
+            headers
+              .trim('\n')
+              .split('\n')
+              .forEach((param, index) => {
+                let matches = param.match(/(.*?): (.*)/)
+                let key = matches[1]
+                let value = matches[2]
+                headersObj[key] = value
+              })
               
-              let matches = param.match(/(.*?): (.*)/)
-              let key = matches[1]
-              let value = matches[2]
-              headersObj[key] = value
-            })
-            
-          
             let response = {
               data: convertIfJson(xhr.response), // 转换为Object，如果为Json格式的h话
               config: options,
@@ -58,8 +75,7 @@ module.exports = /** @class */ (function() {
               headers: headersObj,
               request: xhr
             }
-            
-            
+
             resolve(response)
           } else {
             reject(new Error(`Request failed with status code ${xhr.status}`))
@@ -70,33 +86,19 @@ module.exports = /** @class */ (function() {
       // 获取参数
       let { method, async, url, data, timeout } = options
       // 将传入参数转化为查询字符
-      let params = getParams(options.data)
-      
+      let params = JSON.stringify(data)
+
       xhr.timeout = timeout
       if (method == 'GET') {
         xhr.open(method, `${url}?${params}`, async)
         xhr.send(null)
       } else {
         xhr.open(method, url, async)
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.send(params)
       }
     })
   }
-  /**
-   * 如果是jsong格式字符串，则返回object，否则不改变原字符串
-   *
-   * @param {String} str
-   * @returns {Object | String} 
-   */
-  function convertIfJson(str) {
-    try { 
-      return JSON.parse(str)
-    } catch (error) {
-      return str
-    }
-  } 
-
 
   /**
    * 混合默认ajax配置与新的ajax配置
@@ -121,22 +123,6 @@ module.exports = /** @class */ (function() {
     return options
   }
 
-
-  /**
-   * 将Object格式转换为查询字符串，如{a:1} => a=1
-   *
-   * @param {Object} data 数据 
-   * @returns {String} 查询字符串
-   */
-  function getParams(data) {
-    let queryStr = [] // 返回字符串
-    for (let param in data) {
-      queryStr.push(`${encodeURIComponent(param)}=${encodeURIComponent(data[param])}`)
-    }
-    return queryStr.join('&')
-  }
-
   return ajax
-})()
-
+}())
 
