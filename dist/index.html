@@ -9,6 +9,12 @@
   </head>
   <body>
     <button>Btn</button>
-  <script type="text/javascript" src="ajaxp.js"></script></body>
+  <script type="text/javascript" src="ajaxp.min.js"></script></body>
 </html>
 
+<script>
+ajaxp.get("http://localhost:3000/students").then((result) => {
+  console.log(result)
+})
+
+</script>
