@@ -9,12 +9,17 @@
   </head>
   <body>
     <button>Btn</button>
+    <div></div>
   </body>
 </html>
 
 <script>
-ajaxp.get("http://localhost:3000/students").then((result) => {
-  console.log(result)
-})
+  document.querySelector('button').onclick = ((e) => {
 
+    ajaxp.get('http://localhost:3000/students').then(result => {
+      console.log(result.data)
+      document.querySelector('div').innerHTML = JSON.stringify(result.data)
+    })
+    
+  })
 </script>
