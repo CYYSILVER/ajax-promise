@@ -8,47 +8,72 @@ module.exports = /** @class */ (function() {
    * @returns {Promise}
    */
   function ajax(options) {
-    this.options = createDefaultOptions(options)
+    options = createDefaultOptions(options)
+    return send(options)
   }
-  ajax.create(options) {
+
+  ajax.create = function(options) {
     new ajax(options)
   }
   /**
-   * ajax Get请求
+   * ajax GET\DELETE\HEAD请求
    *
    * @param {String} url url地址
    * @param {Object} options 其他选项
    * @returns {Promise}
    */
-  ajax.prototype.get = function(url, options) {
+  ajax.get = function(url, options) {
     options = createDefaultOptions(options)
     options.url = url
     options.method = 'GET'
     return send(options)
   }
+  ajax.delete = function(url, options) {
+    options = createDefaultOptions(options)
+    options.url = url
+    options.method = 'DELETE'
+    return send(options)
+  }
+  ajax.head = function(url, options) {
+    options = createDefaultOptions(options)
+    options.url = url
+    options.method = 'HEAD'
+    return send(options)
+  }
 
   /**
-   * ajax Get请求
+   * ajax POST\PUT\PATCH 请求
    *
    * @param {String} url url地址
    * @param {Object} data post数据
    * @param {Object} options 其他选项
    * @returns {Promise}
    */
-  ajax.prototype.post = function(url, data, options) {
+  ajax.post = function(url, data, options) {
     options = createDefaultOptions(options)
     options.data = data
     options.url = url
     options.method = 'POST'
     return send(options)
   }
-
-  
-  
+  ajax.put = function(url, data, options) {
+    options = createDefaultOptions(options)
+    options.data = data
+    options.url = url
+    options.method = 'PUT'
+    return send(options)
+  }
+  ajax.patch = function(url, data, options) {
+    options = createDefaultOptions(options)
+    options.data = data
+    options.url = url
+    options.method = 'PATCH'
+    return send(options)
+  }
   
 
   /**
-   * 用于封装xhr对象，返回promise对象
+   * 用于封装xhr对象，发送请求，返回promise对象
    *
    * @param {Object} options ajaxq请求配置
    * @return {Promise}  promised对象
@@ -92,16 +117,17 @@ module.exports = /** @class */ (function() {
       let { method, async, url, data, timeout } = options
       // 将传入参数转化为查询字符
       let params = JSON.stringify(data)
-
+      method = method.toUpperCase()
       xhr.timeout = timeout
-      if (method == 'GET') {
+      if (method.match(/^(?:GET|DELETE|HEAD)$/)) {
         xhr.open(method, `${url}?${params}`, async)
         xhr.send(null)
-      } else {
+      } else if (method.match(/^(?:POST|PUT|PATCH)/)){
         xhr.open(method, url, async)
         xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.send(params)
       }
+      // TODO: method不支持错误处理
     })
   }
 
@@ -111,7 +137,7 @@ module.exports = /** @class */ (function() {
    * @param {*} options 新的配置
    * @returns {Object} 混合后的配置
    */
-  function createDefaultOptions(options) {
+  function createDefaultOptions(options, url, data) {
     options = Object.assign(
       {
         method: 'GET',
@@ -122,9 +148,8 @@ module.exports = /** @class */ (function() {
         cache: true,
         timeout: 0
       },
-      options
+      options,
     )
-    options.method = options.method.toUpperCase()
     return options
   }
 
