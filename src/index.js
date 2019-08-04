@@ -8,13 +8,11 @@ module.exports = /** @class */ (function() {
    * @returns {Promise}
    */
   function ajax(options) {
-    if (! (this instanceof ajax) ) {
-      return new ajax()
-    }
-    options = createDefaultOptions(options)
-    return send(options)
+    this.options = createDefaultOptions(options)
   }
-
+  ajax.create(options) {
+    new ajax(options)
+  }
   /**
    * ajax Get请求
    *
@@ -22,7 +20,7 @@ module.exports = /** @class */ (function() {
    * @param {Object} options 其他选项
    * @returns {Promise}
    */
-  ajax.get = function(url, options) {
+  ajax.prototype.get = function(url, options) {
     options = createDefaultOptions(options)
     options.url = url
     options.method = 'GET'
@@ -37,7 +35,7 @@ module.exports = /** @class */ (function() {
    * @param {Object} options 其他选项
    * @returns {Promise}
    */
-  ajax.post = function(url, data, options) {
+  ajax.prototype.post = function(url, data, options) {
     options = createDefaultOptions(options)
     options.data = data
     options.url = url
