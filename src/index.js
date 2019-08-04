@@ -8,6 +8,9 @@ module.exports = /** @class */ (function() {
    * @returns {Promise}
    */
   function ajax(options) {
+    if (! (this instanceof ajax) ) {
+      return new ajax()
+    }
     options = createDefaultOptions(options)
     return send(options)
   }
@@ -41,6 +44,10 @@ module.exports = /** @class */ (function() {
     options.method = 'POST'
     return send(options)
   }
+
+  
+  
+  
 
   /**
    * 用于封装xhr对象，返回promise对象
