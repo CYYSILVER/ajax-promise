@@ -75,6 +75,7 @@ ajaxp.post('http://example.com/xxx', {
 ajaxp.create(config)
 
 **interface config** 在静态方法的基础上新增baseURL参数
+
 | 参数	| 默认值	| 类型	| 说明	|
 | ----	| ----   |----  |   ----  |
 | baseURL | "" | String | 请求的根地址，在此后的方法调用会在此地址上进行 |
