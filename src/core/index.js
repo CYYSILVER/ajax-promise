@@ -1,5 +1,5 @@
 const { convertIfJson } = require('../helpers/util')
-
+const { getParams } = require('../helpers/util')
 module.exports = {
   send(options) {
     return new Promise((resolve, reject) => {
@@ -39,11 +39,11 @@ module.exports = {
       // 获取参数
       let { method, async, url, data, timeout } = options
       // 将传入参数转化为查询字符
-      let params = JSON.stringify(data)
+      let params = getParams(data)
       method = method.toUpperCase()
       xhr.timeout = timeout
       if (method.match(/^(?:GET|DELETE|HEAD)$/)) {
-        xhr.open(method, `${url}?${params}`, async)
+        xhr.open(method, params ? `${url}?${params}` : `${url}`, async)
         xhr.send(null)
       } else if (method.match(/^(?:POST|PUT|PATCH)/)) {
         xhr.open(method, url, async)
