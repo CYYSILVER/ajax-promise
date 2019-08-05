@@ -1,4 +1,20 @@
 const { send } = require('./core/index')
+// let ajaxInstance = /** @class */ (function() {
+//   function instance(options) {
+//     this.options = options
+//   }
+//   instance.prototype = ajax.prototype
+//   instance.prototype.get = function() {
+//     return send(this.options)
+//   }
+//   instance.prototype.delete
+//   instance.prototype.head
+//   instance.prototype.patch
+//   instance.prototype.post
+//   instance.prototype.put
+
+//   return instance
+// })()
 
 module.exports = /** @class */ (function() {
   /**
@@ -9,14 +25,32 @@ module.exports = /** @class */ (function() {
    */
   function ajax(param1, param2) {
     let options = param2 || param1
-    let url = param2 ? param1 : ""
+    let url = param2 ? param1 : ''
     options = createOptions(options, url)
     return send(options)
   }
+  
 
+  /**
+   * 创建ajaxp实列对象，使用Object.create方法
+   * 
+   * @param {Object} options 要传入的配置参数
+   * @returns {Object} ajaxp对象
+   */
   ajax.create = function(options) {
-    new ajax(options)
+    let o = Object.create(ajax.prototype)
+    o.options = createOptions(options)
+    return o
   }
+
+  ajax.prototype.get = function(url, options) {
+    let { baseURL } = this.options
+    
+    options = Object.assign({}, this.options, options)
+ 
+    return ajax.get(`${baseURL}${url}`, options)
+  }
+
   /**
    * ajax GET\DELETE\HEAD请求
    *
@@ -63,7 +97,7 @@ module.exports = /** @class */ (function() {
     options.method = 'PATCH'
     return send(options)
   }
-  
+
   /**
    * 混合默认ajax配置与新的ajax配置
    *
@@ -72,8 +106,8 @@ module.exports = /** @class */ (function() {
    */
   function createOptions(options, url, data) {
     options = options || {}
-    options.url = url
-    options.data = data
+    options.url = url || ''
+    options.data = data || {}
     options = Object.assign(
       {
         method: 'GET',
@@ -82,13 +116,12 @@ module.exports = /** @class */ (function() {
         dataType: 'json',
         async: true,
         cache: true,
-        timeout: 0
+        timeout: 0,
+        baseURL: '',
       },
-      options,
+      options
     )
     return options
   }
-
   return ajax
-}())
-
+})()
