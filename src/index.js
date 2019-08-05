@@ -50,6 +50,13 @@ module.exports = /** @class */ (function() {
  
     return ajax.get(`${baseURL}${url}`, options)
   }
+  ajax.prototype.delete = function(url, options) {
+    let { baseURL } = this.options
+    
+    options = Object.assign({}, this.options, options)
+ 
+    return ajax.delete(`${baseURL}${url}`, options)
+  }
 
   /**
    * ajax GET\DELETE\HEAD请求
