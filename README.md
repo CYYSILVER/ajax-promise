@@ -15,6 +15,7 @@
 - ajax(config)
 
 **interface config**
+
 | 参数	| 默认值	| 类型	| 说明	|
 | ----	| ----   |----  |   ----  |
 | method |  'GET' |  String | 请求方法，目前支持POST和GET|
@@ -74,7 +75,7 @@ ajaxp.post('http://example.com/xxx', {
 
 ajaxp.create(config)
 
-**interface config** 在静态方法的基础上新增baseURL参数
+**interface config** 在静态方法的基础上新增baseURL参数   
 
 | 参数	| 默认值	| 类型	| 说明	|
 | ----	| ----   |----  |   ----  |
