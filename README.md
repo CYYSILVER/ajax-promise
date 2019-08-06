@@ -12,7 +12,7 @@
 ```
 
 ## 使用ajaxp
-- ajax(config)
+- ajax(config)j
 
 **interface config**
 
@@ -24,8 +24,8 @@
 | async| true | Boolean | 是否为异步|
 | timeout|  0 | Number   |   超时时间 |
 
-```
-​```javascript
+
+```javascript
 ajaxp({
   url: 'http://example.com/xxxx',
   method: 'GET',
@@ -40,6 +40,7 @@ ajaxp({
   console.log(error)
 })
 ```
+
 
 ## 静态方法
 - ajaxp.get(url[, config])
