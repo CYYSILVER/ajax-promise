@@ -4,7 +4,7 @@
 
 ---
 
-# 基本使用
+# 安装
 下载 dist/ajaxp.min.js
 在头部引入
 ```html
@@ -73,7 +73,7 @@ ajaxp.post('http://example.com/xxx', {
 
 ## 创建实例
 
-ajaxp.create(config)
+let instance = ajaxp.create(config)
 
 **interface config** 在静态方法的基础上新增baseURL参数   
 
@@ -85,3 +85,45 @@ ajaxp.create(config)
 | data |  {} |Object | 请求数据 |
 | async| true | Boolean | 是否为异步|
 | timeout|  0 | Number   |   超时时间 |
+
+**实例方法**   
+*此部分的config会覆盖掉instance的config*
+- instance.request(url[, config])
+- instance.get(url[, config])
+- instance.delete(url[, config])
+- instance.head(url[, config])
+- instance.post(url[, data [, config]])
+- instance.put(url[, data [, config]])
+- instance.patch(url[, data [, config]])
+
+### Example
+```javascript
+let instance = ajaxp.create({
+  baseURL: 'http://example.com/',
+  method: 'delete'
+})
+
+// get请求
+instance.get('xxx').then((res) => {
+  console.log(res.data)
+}, (error) => {
+  console.log(error)
+})
+
+// post请求
+instance.post('xxx', {
+  firstname: 'foo',
+  lastname: 'bar'
+})then((res) => {
+  console.log(res.data)
+}, (error) => {
+  console.log(error)
+}
+
+// request方法，使用config.method中的请求方法
+instance.request('xxx').then((res) => {
+  console.log(res.data)
+}, (error) => {
+  console.log(error)
+}
+```
