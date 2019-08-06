@@ -1,6 +1,5 @@
-const { convertIfJson } = require('../helpers/util')
-const { getParams } = require('../helpers/util')
-module.exports = {
+const { convertIfJson, getParams, createOptions } = require('../helpers/util')
+let core = {
   send(options) {
     return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest()
@@ -52,5 +51,20 @@ module.exports = {
       }
       // TODO: method不支持错误处理
     })
+  },
+  ajaxRequestWithData(type) {
+    return (url, data, options) => {
+      options = createOptions(options, url, data)
+      options.method = type
+      return core.send(options)
+    }
+  },
+  ajaxRequestWithoutData(type) {
+    return (url, options) => {
+      options = createOptions(options, url)
+      options.method = type
+      return core.send(options)
+    }
   }
 }
+module.exports = core

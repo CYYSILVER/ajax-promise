@@ -8,20 +8,25 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
-    <button>Btn</button>
-    <div></div>
+    <button class="get">GET</button>
+    <button class="delete">DELETE</button>
+    <button class="head">HEAD</button>
+    <button class="put">PUT</button>
+    <button class="post">POST</button>
+    <button class="patch">PATCH</button>
   </body>
 </html>
 
 <script>
-  const instance = ajaxp.create({
-    baseURL: 'http://localhost:3000',
-    method: 'GET'
+  let instance = ajaxp.create({
+    baseURL: 'http://localhost:3000'
   })
-  document.querySelector('button').onclick = ((e) => {
-    instance.get('/students').then(e => {
-      console.log(e)
-    })
-    
+
+  document.querySelectorAll('button').forEach((ele) => {
+    ele.onclick = function() {
+      instance[ele.className]('students').then((res) => {
+        console.log(res)
+      })
+    }
   })
 </script>
