@@ -1,0 +1,23 @@
+{
+  "name": "simple-ajax-with-promise",
+  "version": "1.0.1",
+  "description": "A light lib of ajax using Promise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CYYSILVER/ajax-promise.git"
+  },
+  "keywords": [
+    "ajax",
+    "promise"
+  ],
+  "author": "chen yinyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CYYSILVER/ajax-promise/issues"
+  },
+  "homepage": "https://github.com/CYYSILVER/ajax-promise#readme"
+}

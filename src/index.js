@@ -113,3 +113,4 @@ const ajaxp = /** @class */ (function() {
 })()
 
 module.exports = ajaxp
+module.exports['default'] = ajaxp

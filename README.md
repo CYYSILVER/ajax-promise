@@ -4,15 +4,23 @@
 
 ---
 
-# 安装
+# 安装   
+
+**使用<script></script>标签**
 下载 dist/ajaxp.min.js
 在头部引入
 ```html
 <script src="ajaxp.min.js"></script>
+```   
+
+
+**使用npm**   
+```npm
+npm install simple-ajax-with-promise
 ```
 
 ## 使用ajaxp
-- ajax(config)j
+- ajax(config)
 
 **interface config**
 

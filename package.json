@@ -1,4 +1,5 @@
 {
+  "name": "simple-ajax-with-promise",
   "version": "1.0.0",
   "description": "My webpack project",
   "scripts": {
